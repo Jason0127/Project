@@ -5,28 +5,86 @@
 	<?php include_once './includes/nav.php';?>
 	<div class="banner-img">
 		<!-- <img src="./vendor/img/img(137).jpg" alt="img" style="width: 100%;" class="img-fluid"> -->
-		<a href="#prod" class="btn goto-products">
-			<i class="fas fa-store mr-2" style="font-size: 1.3rem"></i>
-			<div>
-				<span class="shop-text">S</span>
-				<span class="shop-text">H</span>
-				<span class="shop-text">O</span>
-				<span class="shop-text">P</span>
-			</div>
-			<span class="line"></span>
-			<span class="line"></span>
-			<span class="line"></span>
-			<span class="line"></span>
-		</a>
+		<div class="banner">
+			<div class="banner-text">Nakiki Siguro ang product ay laging bago</div>
+			<a href="#products" class="btn goto-products">
+				<i class="fas fa-store mr-2" style="font-size: 1.3rem"></i>
+				<div>
+					<span class="shop-text">S</span>
+					<span class="shop-text">H</span>
+					<span class="shop-text">O</span>
+					<span class="shop-text">P</span>
+				</div>
+				<span class="line"></span>
+				<span class="line"></span>
+				<span class="line"></span>
+				<span class="line"></span>
+			</a>
+		</div>
 	</div>
 	<div class="message-add-cart">
 		<div class="alert alert-success" role="alert">
 			Added Successfuly!
 		</div>
 	</div>
-	<div class="container mt-5" id="prod">
-		<div class="row" id="products">
-			<!-- Products -->
+
+	<div class="container mt-4">
+
+		<div id="bestFeat" class="text-center mb-5">
+			<h2 class="font-weight-bolder">Best Features</h2>
+			<div class="row d-flex justify-content-center mb-4">
+				<div class="col-md-8">
+					<p class="grey-text">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi voluptate 
+						hic provident nulla repellat facere esse molestiae ipsa labore porro minima 
+						quam quaerat rem, natus repudiandae debitis est sit pariatur.
+					</p>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-8 col-lg-4 mb-4 besfeat-item">
+					<i class="fas fa-shopping-basket fa-4x orange-text"></i>
+					<h4 class="font-weight-bold my-4">Store</h4>
+					<p class="grey-text">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim 
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+						ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+						cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+				<div class="col-md-6 col-lg-4 mb-4 besfeat-item">
+					<i class="fas fa-heart fa-4x red-text"></i>
+					<h4 class="font-weight-bold my-4">Happiness</h4>
+					<p class="grey-text">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim 
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+						ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+						cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+				<div class="col-md-6 col-lg-4 mb-4 besfeat-item">
+					<i class="fas fa-camera fa-4x orange-text"></i>
+					<h4 class="font-weight-bold my-4">Experience</h4>
+					<p class="grey-text">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim 
+						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+						ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 
+						cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<hr class="my-4"/>
+
+		<div>
+			<h2 class="font-weight-bolder text-center mb-4">Products</h2>
+			<div class="row" id="products">
+				<!-- Products -->
+			</div>
 		</div>
 	</div>
 
@@ -109,6 +167,27 @@
 			}
 		}
 
+		
+
+		const bestFeatAni = (vscroll, elem)=>{
+			let height = $(window).height();
+			let onload = height + vscroll - 50
+			let elementPos = elem.offset().top;
+			console.log(elem)
+			if(elementPos <= onload){
+				elem.addClass('load');
+			}else{
+				elem.removeClass('load')
+			}
+		}
+
+		const setAnimationBestFeat = (vscroll)=>{
+			$('#bestFeat .besfeat-item').map((item) =>{
+				item += 1
+				bestFeatAni(vscroll, $(`#bestFeat .besfeat-item:nth-of-type(${item.toString()})`))
+			})
+		}
+
 		const btnLoginHandle = ()=>{
 			$('#login #email').val('');
 			$('#login #password').val('');
@@ -138,17 +217,20 @@
 
 		const shopButtonAnimation = (vscroll)=>{
 			let scrollVal = vscroll / 2;
-			$('.banner-img .goto-products').css({'transform': `translateY(${scrollVal}px)`});
+			$('.banner-img .banner').css({'transform': `translateY(${scrollVal}px)`});
 		}
 
 		$(window).scroll((e)=>{
 			let vscroll = $(this).scrollTop();
 			navBarAnimation(vscroll);
 			shopButtonAnimation(vscroll);
+			setAnimationBestFeat(vscroll);
 		})
 
+		// page Load
 		$(document).ready((e)=>{
 			navBtnLogin();
+			setAnimationBestFeat($(this).scrollTop())
 		})
 
 		$(window).resize((e)=>{

@@ -1,11 +1,11 @@
 <?php
     class Model{
-        // public $dsn = "mysql:host=localhost; port=3306; dbname=ecomm";
-        // public $username = 'root';
-        // public $pwd = '';
-        protected $dsn = "mysql:host=198.91.81.2; port=3306; dbname=floresx6_ecomm";
-        public $username = 'floresx6_flores';
-        public $pwd = 'flores012799';
+        public $dsn = "mysql:host=localhost; port=3306; dbname=ecomm";
+        public $username = 'root';
+        public $pwd = '';
+        // protected $dsn = "mysql:host=198.91.81.2; port=3306; dbname=floresx6_ecomm";
+        // public $username = 'floresx6_flores';
+        // public $pwd = 'flores012799';
         public $db;
 
         public function __construct(){

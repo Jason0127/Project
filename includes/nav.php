@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark default-color navbar-scroll" id="navvv" style="z-index: 1">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-scroll" id="navvv" style="z-index: 23">
     <button class="navbar-toggler menu-btn" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
         aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
