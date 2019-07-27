@@ -2,9 +2,9 @@
     <footer class="page-footer font-small unique-color-dark">
         <div class="primary-color">
             <div class="container">
-                <div class="row py-4">
+                <div class="row py-3">
                     <div class="col-md-4 d-flex justify-content-end mjustify-centent-sm-center">
-                        <h6 class="font-weight-bolder">Get connected with us on social networks!</h6>
+                        <h6 class="font-weight-bolder" style="margin: 0">Get connected with us on social networks!</h6>
                     </div>
                     <div class="col-md-8 d-flex justify-content-end mjustify-centent-sm-center">
                         <!-- facebook -->

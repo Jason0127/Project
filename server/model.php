@@ -6,7 +6,7 @@
         // protected $dsn = "mysql:host=198.91.81.2; port=3306; dbname=floresx6_ecomm";
         // public $username = 'floresx6_flores';
         // public $pwd = 'flores012799';
-        public $db;
+        // public $db;
 
         public function __construct(){
             $this->db = new PDO($this->dsn, $this->username, $this->pwd, array(
