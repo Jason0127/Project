@@ -2,26 +2,28 @@
 	include_once './includes/head.php';
 ?>
 <body>
-	<?php include_once './includes/nav.php';?>
-	<div class="banner-img">
-		<!-- <img src="./vendor/img/img(137).jpg" alt="img" style="width: 100%;" class="img-fluid"> -->
-		<div class="banner">
-			<div class="banner-text">Nakiki Siguro ang product ay laging bago</div>
-			<a href="#products" class="btn goto-products">
-				<i class="fas fa-store mr-2" style="font-size: 1.3rem"></i>
-				<div>
-					<span class="shop-text">S</span>
-					<span class="shop-text">H</span>
-					<span class="shop-text">O</span>
-					<span class="shop-text">P</span>
-				</div>
-				<span class="line"></span>
-				<span class="line"></span>
-				<span class="line"></span>
-				<span class="line"></span>
-			</a>
+	<header>
+		<?php include_once './includes/nav.php';?>
+		<div class="banner-img">
+			<!-- <img src="./vendor/img/img(137).jpg" alt="img" style="width: 100%;" class="img-fluid"> -->
+			<div class="banner">
+				<div class="banner-text">Nakiki Siguro ang product ay laging bago</div>
+				<a href="#products" class="btn goto-products">
+					<i class="fas fa-store mr-2" style="font-size: 1.3rem"></i>
+					<div>
+						<span class="shop-text">S</span>
+						<span class="shop-text">H</span>
+						<span class="shop-text">O</span>
+						<span class="shop-text">P</span>
+					</div>
+					<span class="line"></span>
+					<span class="line"></span>
+					<span class="line"></span>
+					<span class="line"></span>
+				</a>
+			</div>
 		</div>
-	</div>
+	</header>
 	<div class="message-add-cart">
 		<div class="alert alert-success" role="alert">
 			Added Successfuly!
@@ -129,6 +131,34 @@
 
 	<!-- SCRIPTS -->
 	<script async type="text/javascript">
+
+		// Product Iem
+		let products
+		let productItem
+		let userData
+		$.ajax({
+			url: './server/controller.php',
+			method: 'POST',
+			data: {getProduct: 1}
+		})
+		.done((data)=>{
+			products = JSON.parse(data)
+			loadProductItems(products)
+			console.log(products)
+		})
+		
+		const loadProductItems = (items)=>{
+			$.ajax({
+				url: './WidgetUi/product_items.php',
+				method: 'POST',
+				data: {items}
+			})
+			.done((data)=>{
+				// console.log(data)
+				$('#products').append(data)
+			})
+		}
+
 		const auth = ()=>{
 			$.ajax({
 				url: './server/auth.php',
@@ -139,7 +169,12 @@
 				let res = JSON.parse(data)
 				console.log(res)
 				if(res.status !== false){
-					loginTemplate(data)
+					let userInfo = {
+						cart: JSON.parse(localStorage.getItem('cart')),
+						user_name: res.user_name
+					}
+					console.log(userInfo)
+					loginTemplate(userInfo)
 				}
 			})
 		}
@@ -148,7 +183,7 @@
 
 		const navBtnLogin = ()=>{
 			let widths = $(window).width()
-			console.log(widths)
+			// console.log(widths)
 			if(widths <= 990){
 				let inNavbtnLogin = $('#navvv').children('#login-btn')[0]
 				if(inNavbtnLogin == undefined){
@@ -167,13 +202,11 @@
 			}
 		}
 
-		
-
 		const bestFeatAni = (vscroll, elem)=>{
 			let height = $(window).height();
 			let onload = height + vscroll - 50
 			let elementPos = elem.offset().top;
-			console.log(elem)
+			// console.log(elem)
 			if(elementPos <= onload){
 				elem.addClass('load');
 			}else{
@@ -237,31 +270,7 @@
 			navBtnLogin();
 		})		
 
-		let products
-		let productItem
-		let userData
-		$.ajax({
-			url: './server/controller.php',
-			method: 'POST',
-			data: {getProduct: 1}
-		})
-		.done((data)=>{
-			products = JSON.parse(data)
-			loadProductItems(products)
-		})
-		const loadProductItems = (items)=>{
-			$.ajax({
-				url: './WidgetUi/product_items.php',
-				method: 'POST',
-				data: {items}
-			})
-			.done((data)=>{
-				$('#products').append(data)
-			})
-		}
-
 		var timeAdd
-
 
 		// open product Modal
 		const productItemModal = (id)=>{
@@ -290,13 +299,13 @@
 				$('#myModal').modal('toggle')
 				// console.log(data)
 			})
-		}
+		}	 
 
 		const loginTemplate = (user)=>{
-			let userInfo = JSON.parse(user)
-			userData = userInfo
+			let userInfo = user
+			userData = user
 			if(userInfo.status === false) return false;
-			console.log(userInfo)
+			console.log(user)
 			$.ajax({
 				url: './WidgetUi/login_template.php',
 				method: 'POST',
@@ -304,7 +313,13 @@
 			})
 			.done((data)=>{
 				$('#login-btn').remove();
-				$('#navbarSupportedContent-333').append(data);
+				if(typeof $('#navbarSupportedContent-333 #user-cart-template')[0] === 'undefined' || undefined){
+					$('#navbarSupportedContent-333').append(data);
+				}else{
+					$('#navbarSupportedContent-333 #user-cart-template').remove()
+					$('#navbarSupportedContent-333').append(data);
+				}
+
 			})
 		}
 
@@ -314,8 +329,8 @@
 
 			console.log($('#parent'))
 
-			console.log(this.$('#email').val())
-			console.log(this.$('#password').val())
+			// console.log(this.$('#email').val())
+			// console.log(this.$('#password').val())
 			
 			let logdata= {
 				email: this.$('#email').val(),
@@ -331,8 +346,10 @@
 				if(data == 'false' || data == 0 || data == false){
 					alert(data)
 				}else{
-					alert(data)
-					loginTemplate(data)
+					console.log(data)
+					let userInfo = JSON.parse(data)
+					localStorage.setItem('cart', JSON.stringify(userInfo.cart))
+					loginTemplate(userInfo)
 					$('#login-modal').modal('hide')
 				}
 			})
@@ -353,12 +370,21 @@
 				method: 'POST',
 				data: {
 					cart: 1, 
-					item: productItem, 
+					item: productItem,
+					prevItem: localStorage.getItem('cart'),
 					qty: this.$('#qty').val(),
 					userId: userData.id
 				}
 				})
 				.done((data)=>{
+					let res = JSON.parse(data)
+					// console.log(data)
+					localStorage.setItem('cart', JSON.stringify(res.new_cart))
+					let userInfo = {
+						user_name: userData.user_name,
+						cart: res.new_cart
+					}
+					loginTemplate(userInfo)
 					$('#myModal').modal('hide')
 					$('.message-add-cart').addClass('alert-show')
 					timeAdd = setTimeout(()=>{

@@ -95,13 +95,25 @@
 
                     setcookie('auth', $auth_id, time() + 3600, '/');
 
+                    $product = json_decode($res['user_cart']);
+
+                    // foreach($res as $item){
+                    //     array_push($product, array(
+                    //         'qty' => $item['qty'],
+                    //         'product_name' => $item['product_name'],
+                    //         'product_desc' => $item['product_desc'],
+                    //         'product_price' => $item['product_price'],
+                    //         'product_qty' => $item['product_qty']
+                    //     ));
+                    // }
+
                     $user_log = array(
                         'id' => $auth_id,
                         'user_name' => $res['user_name'],
-                        'cart_count' => $res['cart_count']
+                        'cart' => $product
                     );
 
-                    if($user_log['cart_count'] == 0 && $user_log['user_name'] == '' || null){
+                    if($user_log['user_name'] == '' || null){
                         return false;
                     }
 
@@ -111,19 +123,79 @@
 
         }
 
-        function addToCartC($data, $qty){
-
+        function addToCartC($new_item, $prev_item, $qty){
+            $prev_item_dec = json_decode($prev_item, true);
             $id_e = $_COOKIE['auth'];
-
             $id = $this->encript_decrypt($id_e, 'decr');
+            $in_item = 0;
 
-            $data_item = array(
-                'item' => $data,
-                'qty' => $qty,
-                'id' => $id
+            function creating_item($new_item, $qty){
+                $new_item = array(
+                    0 => array(
+                        'id' =>  $new_item['id'],
+                        'product_name' => $new_item['product_name'],
+                        'product_desc' => $new_item['product_desc'],
+                        'product_price' => $new_item['product_price'],
+                        'product_img' => $new_item['product_img'],
+                        'qty' => $qty
+                    )
+                );
+
+                return $new_item;
+
+            }
+
+            if(empty($prev_item_dec) || $prev_item_dec == '' || null){
+                $new_cart = creating_item($new_item, $qty);
+                $data_item = array(
+                    'item' => json_encode($new_cart),
+                    'id' => $id
+                );
+                $result = array(
+                    'status' => $this->addToCart($data_item),
+                    'new_cart' => $new_cart
+                );
+
+                return $result;
+    
+            }
+
+
+            for($i = 0; $i < sizeof($prev_item_dec); $i++){
+
+                if($new_item['id'] == $prev_item_dec[$i]['id']){
+
+                    $new_qty = $prev_item_dec[$i]['qty'] + $qty;
+                    $prev_item_dec[$i]['qty'] = $new_qty;
+                    $in_item = 1;
+
+                }
+
+            }
+            if($in_item == 1){
+                $new_cart = $prev_item_dec;
+                $data_item = array(
+                    'item' => json_encode($prev_item_dec),
+                    'id' => $id
+                );
+            }else{
+            
+                $new_cart = array_merge(creating_item($new_item, $qty), $prev_item_dec);
+                $data_item = array(
+                    'item' => json_encode($new_cart),
+                    'id' => $id
+                );
+
+            }
+
+            $result = array(
+                'status' => $this->addToCart($data_item),
+                'new_cart' => $new_cart
             );
 
-            return $this->addToCart($data_item);
+            return $result;
+
+            // return $prev_item[0];
            
         }
 
@@ -148,6 +220,7 @@
         }
 
     }
+    // End
 
     $obj = new Controller();
 
@@ -173,7 +246,7 @@
 
     if(isset($_POST['cart'])){
         $id = (isset($_POST['userId']) ? $_POST['userId'] : '');
-        echo $obj->addToCartC($_POST['item'], $_POST['qty']);
+        echo json_encode($obj->addToCartC($_POST['item'], $_POST['prevItem'], $_POST['qty']));
     }
 
     if(isset($_POST['adminLogin'])){
@@ -184,4 +257,10 @@
         echo json_encode($obj->getProductTC());
     }
     
+    if(isset($_GET['getCart'])){
+        if(isset($_COOKIE['auth'])){
+            $auth_id = $_COOKIE['auth'];
+            $obj->getCartC($auth_id);
+        }
+    }
 ?>

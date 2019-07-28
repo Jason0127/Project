@@ -50,9 +50,7 @@
         }
 
         function login($data){
-            $stmt = $this->db->prepare("SELECT user_tbl.id, user_name, product_id, COUNT(user_cart.id) cart_count FROM user_tbl LEFT JOIN user_cart 
-                ON user_tbl.id = user_cart.user_id WHERE user_tbl.user_name = :user_name 
-                AND user_tbl.user_pass = :user_pass");
+            $stmt = $this->db->prepare("SELECT a.id, a.user_name, a.user_cart FROM user_tbl a WHERE a.user_name = :user_name AND a.user_pass = :user_pass");
             $stmt->execute(array(
                 ':user_name' => $data['user_name'],
                 ':user_pass' => $data['user_pass']
@@ -65,11 +63,10 @@
         }
 
         function addToCart($data){
-            $stmt = $this->db->prepare("INSERT INTO user_cart (product_id, user_id, qty) VALUES(:product_id, :user_id, :qty)");
+            $stmt = $this->db->prepare("UPDATE user_tbl SET user_cart = :cart_item WHERE id = :user_id");
             $res = $stmt->execute(array(
-                ':product_id' => $data['item']['id'],
-                ':user_id' => $data['id'],
-                ':qty' => $data['qty']
+                ':cart_item' => $data['item'],
+                ':user_id' => $data['id']
             ));
 
             return $res;
@@ -94,7 +91,7 @@
         }
 
         function auth($auth_id){
-            $stmt = $this->db->prepare("SELECT a.user_name, COUNT(b.id) cart_count FROM user_tbl a LEFT JOIN user_cart b ON a.id = b.user_id WHERE a.id = :auth_id");
+            $stmt = $this->db->prepare("SELECT a.user_name FROM user_tbl a WHERE a.id = :auth_id");
             $stmt->execute(array(
                 ':auth_id' => $auth_id
             ));
@@ -116,7 +113,6 @@
             $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $res;
-
         }
 
     }

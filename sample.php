@@ -3,10 +3,31 @@
     $begginer = 'foo';
 
     $array = array(
-        1 => 'bar'
+        0 => 'bar'
     );
 
-    print_r( array_merge(array($begginer), $array));
+    // print_r( array_merge(array($begginer), $array));
+
+    $array1 = array(
+        0 => array(
+            'id' => 1
+            ),
+        1 => array(
+            'id' => 2
+            )
+        );
+
+    $array2 = array(
+        3 => array('id' => 3)
+    );
+
+    // for($i = 0; $i < sizeof($array1); $i++){
+    //     if($array1[$i]['id'] == 1){
+    //         $array1[$i]['id'] = 123;
+    //     }
+    // }
+
+    print_r(array_merge($array1,$array2));
 
 ?>
 

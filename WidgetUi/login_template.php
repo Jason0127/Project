@@ -2,14 +2,15 @@
 
     ob_start();
    $user_data = $_POST['userInfo'];
+   $cart_count = ($user_data['cart'] == null || '' ? 0 : sizeof($user_data['cart']));
 ?>
 
-<ul class="navbar-nav ml-auto">
+<ul class="navbar-nav ml-auto" id="user-cart-template">
     <li class="nav-item" style="z-index: 1">
-        <a href="user/cart.php" class="nav-link">
+        <a href="cart.php" class="nav-link">
             Cart
             <i class="fas fa-shopping-cart"></i>
-            <span class="cart-number"><?= $user_data['cart_count']?></span>
+            <span class="cart-number"><?= $cart_count?></span>
         </a>
     </li>
     <li class="nav-item dropdown">
