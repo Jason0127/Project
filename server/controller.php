@@ -129,71 +129,89 @@
             $id = $this->encript_decrypt($id_e, 'decr');
             $in_item = 0;
 
-            function creating_item($new_item, $qty){
-                $new_item = array(
-                    0 => array(
-                        'id' =>  $new_item['id'],
-                        'product_name' => $new_item['product_name'],
-                        'product_desc' => $new_item['product_desc'],
-                        'product_price' => $new_item['product_price'],
-                        'product_img' => $new_item['product_img'],
-                        'qty' => $qty
-                    )
-                );
+            if($new_item['product_qty'] >= $qty){
 
-                return $new_item;
+                function creating_item($new_item, $qty){
+                    $new_item = array(
+                        0 => array(
+                            'id' =>  $new_item['id'],
+                            'product_name' => $new_item['product_name'],
+                            'product_desc' => $new_item['product_desc'],
+                            'product_price' => $new_item['product_price'],
+                            'product_img' => $new_item['product_img'],
+                            'qty' => $qty
+                        )
+                    );
 
-            }
+                    return $new_item;
 
-            if(empty($prev_item_dec) || $prev_item_dec == '' || null){
-                $new_cart = creating_item($new_item, $qty);
-                $data_item = array(
-                    'item' => json_encode($new_cart),
-                    'id' => $id
-                );
+                }
+
+                if(empty($prev_item_dec) || $prev_item_dec == '' || null){
+                    $new_cart = creating_item($new_item, $qty);
+                    $data_item = array(
+                        'item' => json_encode($new_cart),
+                        'id' => $id
+                    );
+                    $result = array(
+                        'status' => $this->addToCart($data_item),
+                        'new_cart' => $new_cart
+                    );
+
+                    return $result;
+        
+                }
+
+
+                for($i = 0; $i < sizeof($prev_item_dec); $i++){
+
+                    if($new_item['id'] == $prev_item_dec[$i]['id']){
+                        $item_qty = $new_item['product_qty'];
+                        $new_qty = $prev_item_dec[$i]['qty'] + $qty;
+                        if((int)$item_qty >= (int)$new_qty){
+                            $prev_item_dec[$i]['qty'] = $new_qty;
+                            $in_item = 1;
+                        }else{
+                            $result = array(
+                                'status' => false
+                            );
+                            return $result;
+                        }
+
+                    }
+
+                }
+                if($in_item == 1){
+                    $new_cart = $prev_item_dec;
+                    $data_item = array(
+                        'item' => json_encode($prev_item_dec),
+                        'id' => $id
+                    );
+                }else{
+                
+                    $new_cart = array_merge(creating_item($new_item, $qty), $prev_item_dec);
+                    $data_item = array(
+                        'item' => json_encode($new_cart),
+                        'id' => $id
+                    );
+
+                }
+
                 $result = array(
                     'status' => $this->addToCart($data_item),
                     'new_cart' => $new_cart
                 );
 
                 return $result;
-    
-            }
 
-
-            for($i = 0; $i < sizeof($prev_item_dec); $i++){
-
-                if($new_item['id'] == $prev_item_dec[$i]['id']){
-
-                    $new_qty = $prev_item_dec[$i]['qty'] + $qty;
-                    $prev_item_dec[$i]['qty'] = $new_qty;
-                    $in_item = 1;
-
-                }
-
-            }
-            if($in_item == 1){
-                $new_cart = $prev_item_dec;
-                $data_item = array(
-                    'item' => json_encode($prev_item_dec),
-                    'id' => $id
-                );
             }else{
-            
-                $new_cart = array_merge(creating_item($new_item, $qty), $prev_item_dec);
-                $data_item = array(
-                    'item' => json_encode($new_cart),
-                    'id' => $id
+                $result = array(
+                    'status' => false,
+                    'new_cart' => null
                 );
 
+                return $result;
             }
-
-            $result = array(
-                'status' => $this->addToCart($data_item),
-                'new_cart' => $new_cart
-            );
-
-            return $result;
 
             // return $prev_item[0];
            

@@ -171,7 +171,7 @@
 				if(res.status !== false){
 					let userInfo = {
 						cart: JSON.parse(localStorage.getItem('cart')),
-						user_name: res.user_name
+						user_name: res[0].user_name
 					}
 					console.log(userInfo)
 					loginTemplate(userInfo)
@@ -379,17 +379,24 @@
 				.done((data)=>{
 					let res = JSON.parse(data)
 					// console.log(data)
-					localStorage.setItem('cart', JSON.stringify(res.new_cart))
-					let userInfo = {
-						user_name: userData.user_name,
-						cart: res.new_cart
+					if(res.status !== false){
+						localStorage.setItem('cart', JSON.stringify(res.new_cart))
+						let userInfo = {
+							user_name: userData.user_name,
+							cart: res.new_cart
+						}
+						loginTemplate(userInfo)
+						$('#myModal').modal('hide')
+						$('.message-add-cart').addClass('alert-show')
+						timeAdd = setTimeout(()=>{
+							$('.message-add-cart').removeClass('alert-show')
+						}, 3000)
+					}else{
+						$('#formodal .modal-body .row').before("<div class='message-cart'><div class='alert alert-danger'>Out Of Stock!</div></div>")
+						setTimeout(()=>{
+							$('#formodal .message-cart').addClass('alert-show hide')
+						}, 100)
 					}
-					loginTemplate(userInfo)
-					$('#myModal').modal('hide')
-					$('.message-add-cart').addClass('alert-show')
-					timeAdd = setTimeout(()=>{
-						$('.message-add-cart').removeClass('alert-show')
-					}, 3000)
 				})
 			}else{
 				

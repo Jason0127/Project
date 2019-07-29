@@ -18,7 +18,7 @@
                
                 echo json_encode($errors);
             }else{
-                if($res['user_name'] != null || ''){
+                if($res[0]['user_name'] != null || ''){
                     echo json_encode($res);
                 }else{
                     echo json_encode($errors);

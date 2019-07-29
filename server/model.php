@@ -6,7 +6,7 @@
         // protected $dsn = "mysql:host=198.91.81.2; port=3306; dbname=floresx6_ecomm";
         // public $username = 'floresx6_flores';
         // public $pwd = 'flores012799';
-        // public $db;
+        public $db;
 
         public function __construct(){
             $this->db = new PDO($this->dsn, $this->username, $this->pwd, array(
@@ -91,12 +91,14 @@
         }
 
         function auth($auth_id){
-            $stmt = $this->db->prepare("SELECT a.user_name FROM user_tbl a WHERE a.id = :auth_id");
+            $stmt = $this->db->prepare("SELECT a.user_name, a.user_fname, a.user_lname, a.user_dob, 
+                a.user_gender, b.user_city, b.user_street, b.user_city, b.user_cpno FROM user_tbl a 
+                LEFT JOIN user_info_tbl b on a.id = b.user_id where a.id = :auth_id ORDER BY b.id");
             $stmt->execute(array(
                 ':auth_id' => $auth_id
             ));
 
-            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $res;
         }

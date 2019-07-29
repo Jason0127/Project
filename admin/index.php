@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="container mt-5">
+    <div class="container mt-5 product_tbl">
         <a href="add_product.php" class="btn c-btn-2bbbad btn-sm">Add Product</a>
         <table class="table table-bordered mt-2">
             <thead>
