@@ -10,7 +10,7 @@
     <!-- Bootstrap core CSS -->
     <link href="../vendor/css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
-    <link href="../vendor/css/mdbb.min.css" rel="stylesheet">
+    <link href="../vendor/css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="../vendor/css/style.css" rel="stylesheet">
     <title>Document</title>

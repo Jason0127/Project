@@ -25,7 +25,6 @@
             <div class="d-inline-block font-weight-bolder">Sub Total: </div>
             <div class="sub-total-text d-inline-block"></div>
             <button class="btn btn-check-out">Check Out</button>
-
         </div>
     </div>
     

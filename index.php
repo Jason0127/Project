@@ -33,7 +33,7 @@
 	<div class="container mt-4">
 
 		<div id="bestFeat" class="text-center mb-5">
-			<h2 class="font-weight-bolder">Best Features</h2>
+			<h2 class="font-weight-bolder">Features</h2>
 			<div class="row d-flex justify-content-center mb-4">
 				<div class="col-md-8">
 					<p class="grey-text">
@@ -67,8 +67,8 @@
 					</p>
 				</div>
 				<div class="col-md-6 col-lg-4 mb-4 besfeat-item">
-					<i class="fas fa-camera fa-4x orange-text"></i>
-					<h4 class="font-weight-bold my-4">Experience</h4>
+					<i class="fas fa-shipping-fast fa-4x orange-text"></i>
+					<h4 class="font-weight-bold my-4">Shipping</h4>
 					<p class="grey-text">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
 						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim 

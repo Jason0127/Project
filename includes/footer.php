@@ -1,6 +1,6 @@
 
-    <footer class="page-footer font-small unique-color-dark">
-        <div class="primary-color">
+    <footer class="page-footer font-small footer-color">
+        <div class="footer-top-bottom-color">
             <div class="container">
                 <div class="row py-3">
                     <div class="col-md-4 d-flex justify-content-end mjustify-centent-sm-center">
@@ -59,8 +59,8 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright text-center primary-color py-3">
-            &copy; 2019 CopyRight
+        <div class="footer-copyright text-center py-3">
+            &copy; 2019 All rights reserved
         </div>
     </footer>
 </body>

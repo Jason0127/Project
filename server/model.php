@@ -91,8 +91,9 @@
         }
 
         function auth($auth_id){
-            $stmt = $this->db->prepare("SELECT a.user_name, a.user_fname, a.user_lname, a.user_dob, 
-                a.user_gender, b.user_city, b.user_street, b.user_city, b.user_cpno FROM user_tbl a 
+            $stmt = $this->db->prepare("SELECT a.user_name, a.user_cpno, a.user_fname, a.user_lname, a.user_dob, 
+                a.user_gender, b.address_id, b.user_city, b.user_street, b.user_barangay, b.user_city, b.user_cpno_a, b.user_fname_a, 
+                b.user_lname_a FROM user_tbl a 
                 LEFT JOIN user_info_tbl b on a.id = b.user_id where a.id = :auth_id ORDER BY b.id");
             $stmt->execute(array(
                 ':auth_id' => $auth_id
@@ -113,6 +114,64 @@
             ));
 
             $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $res;
+        }
+
+        function addAddress($data){
+            $stmt = $this->db->prepare("INSERT INTO user_info_tbl (user_id, user_city, user_street, user_barangay, user_cpno_a, user_fname_a, user_lname_a, address_id) 
+            VALUES(:id, :user_city, :user_street, :user_barangay, :user_cpno_a, :user_fname_a, :user_lname_a, :address_id)");
+            $res = $stmt->execute(array(
+                ':address_id' => $data['address_id'],
+                ':id' => $data['id'],
+                ':user_city' => $data['city'],
+                ':user_street' => $data['street'],
+                ':user_barangay' => $data['barangay'],
+                ':user_cpno_a' => $data['phone'],
+                ':user_fname_a' => $data['fname'],
+                ':user_lname_a' => $data['lname']
+            ));
+            
+            return $res;
+        }
+
+        function deleteAddress($id){
+            $stmt = $this->db->prepare("DELETE FROM user_info_tbl where address_id = :address_id");
+            $res = $stmt->execute(array(
+                ':address_id' => $id
+            ));
+
+            return $res;
+        }
+
+        function updateAddress($data){
+            $stmt = $this->db->prepare("UPDATE user_info_tbl set user_city = :user_city, user_street = :user_street,
+            user_barangay = :user_barangay, user_cpno_a = :user_cpno_a, user_fname_a = :user_fname_a, user_lname_a = :user_lname_a
+            WHERE address_id = :address_id");
+            $res = $stmt->execute(array(
+                ':address_id' => $data['address_id'],
+                ':user_lname_a' => $data['user_lname_a'],
+                ':user_fname_a' => $data['user_fname_a'],
+                ':user_cpno_a' => $data['user_cpno_a'],
+                ':user_barangay' => $data['user_barangay'],
+                ':user_city' => $data['user_city'],
+                ':user_street' => $data['user_street']
+            ));
+
+            return $res;
+        }
+
+        function updateOverview($id, $data){
+            $stmt = $this->db->prepare("UPDATE user_tbl set user_fname = :user_fname, user_lname = :user_lname, user_cpno = :user_cpno,
+            user_dob = :user_dob, user_gender = :user_gender WHERE id = :id");
+            $res = $stmt->execute(array(
+                ':id' => $id,
+                ':user_fname' => $data['f_name'],
+                ':user_lname' => $data['l_name'],
+                ':user_dob' => $data['dob'],
+                ':user_cpno' => $data['cpno'],
+                ':user_gender' => $data['gender'],
+            ));
 
             return $res;
         }

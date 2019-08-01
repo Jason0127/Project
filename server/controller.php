@@ -237,6 +237,162 @@
             return $this->getProductT();
         }
 
+        function addAddressC($data){
+            $fname = (isset($data['user_fname_a']) ? $data['user_fname_a'] : '');
+
+            $lname = (isset($data['user_lname_a']) ? $data['user_lname_a'] : '');
+
+            $phone = (isset($data['user_cpno_a']) ? $data['user_cpno_a'] : '');
+
+            $street = (isset($data['user_street']) ? $data['user_street'] : '');
+
+            $barangay = (isset($data['user_barangay']) ? $data['user_barangay'] : '');
+
+            $city = (isset($data['user_city']) ? $data['user_city'] : '');
+
+            $address_id = (isset($data['address_id']) ? $data['address_id'] : '');
+
+            if(isset($_COOKIE['auth'])){
+                $id = $this->encript_decrypt($_COOKIE['auth'], 'decr');
+
+                if($id != false){
+                    $data = array(
+                        'address_id' => $address_id,
+                        'id' => $id,
+                        'fname' => $fname,
+                        'lname' => $lname,
+                        'phone' => $phone,
+                        'street' => $street,
+                        'barangay' => $barangay,
+                        'city' => $city,
+                    );
+    
+                    $res = array(
+                        'status' => true,
+                        'add' => $this->addAddress($data)
+                    );
+    
+                    return $res;
+                }
+
+            }
+
+            $error = array(
+                'status' => false
+            );
+
+            return $error;
+
+        }
+
+        function deleteAddressC($data){
+            $error = array(
+                'status' => false
+            );
+
+            if(isset($_COOKIE['auth'])){
+                $authid = $_COOKIE['auth'];
+                $auth = $this->encript_decrypt($authid, 'decr');
+
+                if($auth != false){
+
+                    $id = (isset($data) ? $data : '');
+                    if($id == ''){
+                        return $error;
+                    }
+                    $this->deleteAddress($id);
+                    $error = array(
+                        'status' => true,
+                        'delete' => $this->deleteAddress($id)
+                    );
+
+                    return $error;
+
+                }
+            }
+
+            return $error;
+        }
+
+        function updateAddressC($data){
+            $address_id = (isset($data['address_id']) ? $data['address_id'] : '');
+            $user_fname_a = (isset($data['user_fname_a']) ? $data['user_fname_a'] : '');
+            $user_lname_a = (isset($data['user_lname_a']) ? $data['user_lname_a'] : '');
+            $user_cpno_a = (isset($data['user_cpno_a']) ? $data['user_cpno_a'] : '');
+            $user_street = (isset($data['user_street']) ? $data['user_street'] : '');
+            $user_barangay = (isset($data['user_barangay']) ? $data['user_barangay'] : '');
+            $user_city = (isset($data['user_city']) ? $data['user_city'] : '');
+
+            $data = array(
+                'address_id' => $address_id,
+                'user_fname_a' => $user_fname_a,
+                'user_lname_a' => $user_lname_a,
+                'user_cpno_a' => $user_cpno_a,
+                'user_street' => $user_street,
+                'user_barangay' => $user_barangay,
+                'user_city' => $user_city
+            );
+
+            if(isset($_COOKIE['auth'])){
+                $authid = $_COOKIE['auth'];
+                $auth = $this->encript_decrypt($authid, 'decr');
+
+                if($auth != false){
+                    $res = array(
+                        'status' => true,
+                        'update' => $this->updateAddress($data)
+                    );
+    
+                    return $res;
+                }
+
+                $error = array(
+                    'status' => false
+                );
+
+                return $error;
+
+            }
+
+        }
+
+        function updateOverviewC($data){
+            $f_name = (isset($data['fName']) ? $data['fName'] : '');
+            $l_name = (isset($data['lName']) ? $data['lName'] : '');
+            $dob = (isset($data['dob']) ? $data['dob'] : '');
+            $cpno = (isset($data['cpno']) ? $data['cpno'] : '');
+            $gender = (isset($data['gender']) ? $data['gender'] : '');
+
+            $data = array(
+                'f_name' => $f_name,
+                'l_name' => $l_name,
+                'dob' => $dob,
+                'cpno' => $cpno,
+                'gender' => $gender,
+            );
+
+            if(isset($_COOKIE['auth'])){
+                $id = $_COOKIE['auth'];
+                $id = $this->encript_decrypt($id, 'decr');
+
+                if($id != false){
+                    $res = array(
+                        'update' => true,
+                        'status' => $this->updateOverview($id, $data)
+                    );
+    
+                    return $res;
+                }
+
+            }
+
+            $error = array(
+                'update' => false
+            );
+
+            return $error;
+        }
+
     }
     // End
 
@@ -281,4 +437,21 @@
             $obj->getCartC($auth_id);
         }
     }
+
+    if(isset($_POST['addAddress'])){
+        echo json_encode($obj->addAddressC($_POST['addresInfo']));
+    }
+
+    if(isset($_POST['deleteAddress'])){
+        echo json_encode($obj->deleteAddressC($_POST['id']));
+    }
+
+    if(isset($_POST['updateAddress'])){
+        echo json_encode($obj->updateAddressC($_POST['newAddress']));
+    }
+
+    if(isset($_POST['updateOverview'])){
+        echo json_encode($obj->updateOverviewC($_POST['overview']));
+    }
+
 ?>

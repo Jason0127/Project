@@ -39,52 +39,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script type="text/javascript" src="vendor/js/jquery-3.4.1.min.js"></script>
     <style>
-        .animaiton{
-            width: 300px;
-            height: 300px;
-            background: red;
-            transition: all 2s ease-in;
-        }
-        .box{
-            background: red; 
-            width: 20px; 
-            height: 20px;
-        }
-        /* .parent span:nth-of-type(1){
-            background-color: red;
-            width: 100%;
-            height: 2px;
-        } */
+       body{
+           box-sizing: border-box;
+       }
 
-        .effect{
-            outline: none;
-            border: 0; 
-            padding: 7px 0; 
-            border-bottom: 1px solid #ccc;
-            color: #333; 
-            width: 100%; 
-            box-sizing: border-box; 
-            letter-spacing: 1px;
-        }
+       .parent{
+           height: 100vh;
+           width: 100vw;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+       }
 
-        .border{
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 0;
-            height: 2px; 
-            background-color: #4caf50; 
-            transition: all 1s ease-in;
-        }
-
-        .effect:focus ~ .border{
-            width: 100%;
-            /* transition: 1s; */
-        }
-
-        .parent{
-            position: relative;
-        }
+       .child{
+           width: 50%;
+           position: relative;
+            /* background-color: red; */
+            border: 1px solid red;
+          flex: 0 0 50%;
+          max-width: 50%
+       }
 
     </style>
 
@@ -102,12 +79,20 @@
             <span></span>
         </div>
     </form> -->
-    <div class="parent">
+    <!-- <div class="parent">
         <input type="text" class="effect" placeholder="asdasdasdasd">
         <span class="border"></span>
-    </div>
+    </!--> 
     <!-- <a href="sample1.php"></a>
     <div class="animaiton"></div> -->
+
+    <div class="parent">
+
+       <div class="child"></div>
+       <div class="child"></div>
+
+    </div>
+
 
     <script tpye="text/javascript">
         const GO = ()=>{
