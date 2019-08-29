@@ -24,7 +24,7 @@
         <div class="sub-total d-flex justify-content-end align-items-center mb-5">
             <div class="d-inline-block font-weight-bolder">Sub Total: </div>
             <div class="sub-total-text d-inline-block"></div>
-            <button class="btn btn-check-out">Check Out</button>
+            <button onclick="checkOut()" class="btn btn-check-out">Check Out</button>
         </div>
     </div>
     
@@ -36,81 +36,122 @@
     <script type="text/javascript">
 
         let cartItems = JSON.parse(localStorage.getItem('cart'));
-        let subTotal
+        const itemCart = {
+            subTotal: ''
+        }
 
-        $(document).ready(()=>{
-            const auth = ()=>{
-                $.ajax({
-                    url: './server/auth.php',
-                    method: 'GET',
-                    data: {auth: 1}
-                })
-                .done((data)=>{
-                    let res = JSON.parse(data)
-                    if(res.status === false){
-                        return window.location.href = 'index.php'
-                    }
+        const updateCart = ()=>{
+            $.ajax({
+                url: './server/controller.php',
+                method: 'POST',
+                data: {updateProduct: 1, cartItems}
+            })
+            .done((data)=>{
+                const res = JSON.parse(data);
+                if(res.status !== false){
+                    localStorage.removeItem('cart');
+                    loadCartItem()
+                    return console.log('OK')
+                }
+                console.log('errrrr')
+            })
+        }
 
-                    $('body').css({'display': 'unset'})
-                    return true;
-                })
-            }
-            auth();
-            const getCart = ()=>{
-                $.ajax({
-                    url: './server/controller.php',
-                    method: 'GET',
-                    data: {getCart: 1}
-                })
-                .done((data)=>{
-                    alert(data)
-                })
-            }
+        const checkOut = () =>{
+            $.ajax({
+                url: './server/controller.php',
+                method: 'POST',
+                data: {checkOut: 1}
+            })
+            .done((data)=>{
+                const res = JSON.parse(data)
+                if(res.status !== false){
+                    updateCart();
+                    return console.log('check')
+                }
+                console.log('qwe')
+            })
+        }
 
-            const loginInfo = (user)=>{
-                let userInfo = user
-                $.ajax({
-                    url: './WidgetUi/login_template.php',
-                    method: 'POST',
-                    data: {userInfo}
-                })
-                .done((data)=>{
-                    $('#login-btn').remove();
-                    $('#navbarSupportedContent-333').append(data);
-                })
-            }
-            
-            const onCart = ()=>{
-                let query = location.search.substr(1).split('&').toString();
-                let user = query.split('=')[1]
-                let userInfo = {
-                    user_name: user,
-                    cart: cartItems
+        const pesosTemplate = (data)=>{
+            return '&#8369;' + data  + '.00'
+        }
+
+        const loadCartItem = (items = null)=>{
+            $.ajax({
+                url: './WidgetUi/cart_template.php',
+                method: 'POST',
+                data: {items}
+            })
+            .done((data)=>{
+                let res = JSON.parse(data)
+                itemCart.subTotal = res.sub_total
+                $('#cart table').html('')
+                $('#cart .sub-total .sub-total-text').html('')
+                $('#cart table').append(res.set)
+
+                $('#cart .sub-total .sub-total-text').append(pesosTemplate(itemCart.subTotal))
+            })
+        }
+
+        const auth = ()=>{
+            $.ajax({
+                url: './server/auth.php',
+                method: 'GET',
+                data: {auth: 1}
+            })
+            .done((data)=>{
+                let res = JSON.parse(data)
+                console.log(res)
+                if(res.status === false){
+                    return window.location.href = 'index.php'
                 }
 
-                loginInfo(userInfo)
-                loadCartItem(cartItems)
+                $('body').css({'display': 'unset'})
+                return true;
+            })
+        }
+
+
+        const loginInfo = (user)=>{
+            let userInfo = user
+            $.ajax({
+                url: './WidgetUi/login_template.php',
+                method: 'POST',
+                data: {userInfo}
+            })
+            .done((data)=>{
+                $('#login-btn').remove();
+                $('#navbarSupportedContent-333').append(data);
+            })
+        }
+
+        const onCart = ()=>{
+            let query = location.search.substr(1).split('&').toString();
+            let user = query.split('=')[1]
+            let userInfo = {
+                user_name: user,
+                cart: cartItems
             }
 
-            const pesosTemplate = (data)=>{
-                return '&#8369;' + data 
-            }
+            loginInfo(userInfo)
+            loadCartItem(cartItems ? cartItems : null)
+        }
 
-            const loadCartItem = (items)=>{
-                $.ajax({
-                    url: './WidgetUi/cart_template.php',
-                    method: 'POST',
-                    data: {items}
-                })
-                .done((data)=>{
-                    let res = JSON.parse(data)
-                    subTotal = res.sub_total
-                    $('#cart table').append(res.set)
-
-                    $('#cart .sub-total .sub-total-text').append(pesosTemplate(subTotal))
-                })
-            }
+        $(document).ready(()=>{
+            
+            auth();
             onCart();
+            // const getCart = ()=>{
+            //     $.ajax({
+            //         url: './server/controller.php',
+            //         method: 'GET',
+            //         data: {getCart: 1}
+            //     })
+            //     .done((data)=>{
+            //         alert(data)
+            //     })
+            // }
         })
     </script>
 <?php 

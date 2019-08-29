@@ -167,7 +167,7 @@
 
                     if($new_item['id'] == $prev_item_dec[$i]['id']){
                         $item_qty = $new_item['product_qty'];
-                        $new_qty = $prev_item_dec[$i]['qty'] + $qty;
+                        $new_qty =  ($qty == '' ? 0 : $qty) + ($prev_item_dec[$i]['qty'] ==  '' ? 0 : $prev_item_dec[$i]['qty']);
                         if((int)$item_qty >= (int)$new_qty){
                             $prev_item_dec[$i]['qty'] = $new_qty;
                             $in_item = 1;
@@ -393,6 +393,41 @@
             return $error;
         }
 
+        function getCheckoutCartC(){
+            if(isset($_COOKIE['auth'])){
+                $auth_id = $_COOKIE['auth'];
+                $auth = $this->encript_decrypt($auth_id, 'decr');
+                
+                if($auth != false){
+                    $res = array(
+                        'status' => true,
+                        'cart' => $this->Checkout($auth),
+                        'id' => $auth_id
+                    );
+
+                    return $res;
+                }
+            }
+
+            $error = array(
+                'status' => false
+            );
+
+            return $error;
+        }
+
+        function updateProductC($data){
+            if(!empty($data)){
+                foreach($data as $item){
+                    $this->updateProduct($item['id'], $item['qty']);
+                }
+                $res = array(
+                    'status' => true
+                );
+                return $res;
+            }
+        }
+
     }
     // End
 
@@ -431,12 +466,12 @@
         echo json_encode($obj->getProductTC());
     }
     
-    if(isset($_GET['getCart'])){
-        if(isset($_COOKIE['auth'])){
-            $auth_id = $_COOKIE['auth'];
-            $obj->getCartC($auth_id);
-        }
-    }
+    // if(isset($_GET['getCart'])){
+    //     if(isset($_COOKIE['auth'])){
+    //         $auth_id = $_COOKIE['auth'];
+    //         $obj->getCartC($auth_id);
+    //     }
+    // }
 
     if(isset($_POST['addAddress'])){
         echo json_encode($obj->addAddressC($_POST['addresInfo']));
@@ -452,6 +487,14 @@
 
     if(isset($_POST['updateOverview'])){
         echo json_encode($obj->updateOverviewC($_POST['overview']));
+    }
+
+    if(isset($_POST['checkOut'])){
+        echo json_encode($obj->getCheckoutCartC(), true);
+    }
+
+    if(isset($_POST['updateProduct'])){
+        echo json_encode($obj->updateProductC($_POST['cartItems']));
     }
 
 ?>

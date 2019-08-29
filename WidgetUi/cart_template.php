@@ -13,19 +13,23 @@
 
 ?>
 <?php 
-    if(isset($_POST['items'])){
+    if(!empty($_POST['items'])){
         foreach($_POST['items'] as $item){
             $total_price = (int)$item['product_price'] * (int)$item['qty'];
             $sub_total += $total_price;
 ?> 
             <tbody>
                 <th class="text-truncate prod-td-size"><?= $item['product_name']?></th>
-                <th><?= $item['product_price']?></th>
+                <th><?= peso($item['product_price'])?></th>
                 <th><?= qty($item['qty'])?></th>
                 <th><?= peso($total_price)?></th>
             </tbody
 <?php
         }
+    }else{
+?>
+    <div>Empty</div>
+<?php
     }
 ?>
 <?php

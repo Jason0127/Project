@@ -1,5 +1,5 @@
 
-    <footer class="page-footer font-small footer-color">
+    <footer class="page-footer font-small footer-color" style="position: relative; top: 9vh">
         <div class="footer-top-bottom-color">
             <div class="container">
                 <div class="row py-3">

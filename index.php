@@ -268,7 +268,7 @@
 
 		$(window).resize((e)=>{
 			navBtnLogin();
-		})		
+		})
 
 		var timeAdd
 

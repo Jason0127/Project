@@ -176,5 +176,26 @@
             return $res;
         }
 
+        function Checkout($id){
+            $stmt = $this->db->prepare("INSERT transac_tbl (user_id, order_item, status) SELECT a.id, a.user_cart, :deliv FROM user_tbl a WHERE id = :id");
+            $res = $stmt->execute(array(
+                ':id' => $id,
+                ':deliv' => 'Deleviring'
+            ));
+
+            return $res;
+        }
+
+        function updateProduct($id, $qty){
+            $stmt = $this->db->prepare("UPDATE product_tbl a INNER JOIN (SELECT id, product_qty FROM product_tbl WHERE id = :id) b 
+            on b.id = a.id SET a.product_qty = b.product_qty - :qty");
+            $res = $stmt->execute(array(
+                ':id' => $id,
+                ':qty' => $qty
+            ));
+
+            return $res;
+        }
+
     }
 ?>

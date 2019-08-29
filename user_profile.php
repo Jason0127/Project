@@ -30,6 +30,14 @@
                                 </a>
                                 <span class="line"></span>
                             </li>
+                            <li class="d-flex position-relative border-bottom py-1">
+                                
+                                <a class="p-2 grey-text text-decoration-none" id="link-history">
+                                    <i class="fas fa-map-marker-alt grey-text mx-3" style="font-size: 1rem"></i>
+                                    history
+                                </a>
+                                <span class="line"></span>
+                            </li>
                         </nav>
                     </div>
                 </div>
