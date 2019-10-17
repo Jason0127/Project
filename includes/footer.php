@@ -45,15 +45,15 @@
                     <div class="contact">
                         <p>
                             <i class="fas fa-home mr-2"></i>
-                            07 Dayap Street Western Bicutan Taguig City
+                            test
                         </p>
                         <p>
                             <i class="fas fa-envelope mr-2"></i>
-                            jasonflores0127@gmail.com
+                            test
                         </p>
                         <p>
                             <i class="fas fa-mobile mr-2"></i>
-                            09196400509
+                            test
                         </p>
                     </div>
                 </div>

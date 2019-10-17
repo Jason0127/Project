@@ -7,7 +7,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-admin">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="#" class="nav-link">Home</a>
+                <a href="./index.php" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="./add_product.php" class="nav-link">Add Product</a>
+            </li>
+            <li class="nav-item">
+                <a href="./create_account.php" class="nav-link">Create Account</a>
             </li>
         </ul>
         <!-- <button class="btn btn-sm c-btn-2bbbad" id="admin-log-btn" data-toggle="modal" data-target="#admin-login">Login</button> -->
