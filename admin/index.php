@@ -137,6 +137,18 @@
         })
    }
 
+   const logout = () => {
+       $.ajax({
+           url: '../server/controller.php',
+           method: 'GET',
+           data: {logout: 1}
+       })
+       .done((data) => {
+        console.log(data)
+        window.location.href = 'login.php'
+       })
+   }
+
 
    $(document).ready((e)=>{
         tableProd()

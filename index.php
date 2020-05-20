@@ -1,5 +1,6 @@
 <?php
 	include_once './includes/head.php';
+	echo dirname(__FILE__);
 ?>
 <body>
 	<header>
@@ -126,6 +127,69 @@
 			</div>
 		</div>
 	</div>
+
+
+	<div id="sign">
+		<div class="modal fade" id="sign-modal" tabindex="-1" role='dialog'>
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Login</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="login_form">
+
+							<div class="md-form">
+								<input type="text" class="form-control" id="email">
+								<label for="email" id="lemail">Email</label>
+							</div>
+
+							<div class="md-form">
+								<input type="password" class="form-control" id="password">
+								<label for="password" id="lpassword">Password</label>
+							</div>
+
+							<div class="md-form">
+								<input type="text" class="form-control" id="user-gender">
+								<label for="email" id="luser-gender">User gender</label>
+							</div>
+
+							<div class="md-form">
+								<input type="password" class="form-control" id="password">
+								<label for="password" id="lpassword">Password</label>
+							</div>
+
+							<div class="md-form">
+								<input type="text" class="form-control" id="email">
+								<label for="email" id="lemail">Email</label>
+							</div>
+
+							<div class="md-form">
+								<input type="password" class="form-control" id="password">
+								<label for="password" id="lpassword">Password</label>
+							</div>
+
+							<div class="md-form">
+								<input type="text" class="form-control" id="email">
+								<label for="email" id="lemail">Email</label>
+							</div>
+
+							<button class="btn btn-primary c-btn-round btn-md" id="sign-up">Login</button>
+
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 
 	<?php include_once './includes/scripts.php'?>
 
@@ -407,6 +471,21 @@
 			}
 			
 		})
+
+		const logout = () => {
+			$.ajax({
+				url: './server/controller.php',
+				method: 'GET',
+				data: {logoutUser: 1}
+			})
+			.done((done) => {
+				let user = {
+					status: false
+				}
+				location.reload();
+				console.log(done)
+			})
+		}
 
 	</script>
 <?php include_once './includes/footer.php';

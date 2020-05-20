@@ -1,18 +1,39 @@
 <?php
-    class Model{
+    include_once './controller.php';
+    class Model {
         public $dsn = "mysql:host=localhost; port=3306; dbname=ecomm";
         public $username = 'root';
-        public $pwd = '';
+        public $pwd = 'root';
         // protected $dsn = "mysql:host=198.91.81.2; port=3306; dbname=floresx6_ecomm";
         // public $username = 'floresx6_flores';
         // public $pwd = 'flores012799';
         public $db;
 
         public function __construct(){
+            // parent::__construct();
             $this->db = new PDO($this->dsn, $this->username, $this->pwd, array(
                 PDO::ATTR_ERRMODE,
                 PDO::ERRMODE_EXCEPTION
             ));
+        }
+
+        function encript_decrypt($id, $action) {
+            $secret_iv = 'secret0127';
+            $secret_key = '0127';
+            $method = 'AES-256-CBC';
+
+            $key = hash('sha256', $secret_key);
+
+            $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+            if($action == 'encr'){
+                $out = openssl_encrypt($id, $method, $key, 0, $iv);
+                $out = base64_encode($out);
+            }elseif($action == 'decr'){
+                $out = openssl_decrypt(base64_decode($id), $method, $key, 0, $iv);
+            }
+            
+            return $out;
         }
 
         function getProduct(){
@@ -42,7 +63,7 @@
             $res = $stmt->execute(array(
                 ':user_type' => 1,
                 ':user_name' => $data['user_name'],
-                ':user_pass' => $data['user_pass']
+                ':user_pass' => $this->encript_decrypt($data['user_pass'], 'encr')
             ));
 
             return $res;
@@ -77,7 +98,7 @@
             $stmt = $this->db->prepare("SELECT * FROM user_tbl where user_name = :user_name and user_pass = :user_pass");
             $stmt->execute(array(
                 ':user_name' => $data['userName'],
-                ':user_pass' => $data['userPass']
+                ':user_pass' => $this->encript_decrypt($data['userPass'], 'encr')
             ));
             $res = $stmt->fetch(PDO::FETCH_ASSOC);
             return $res;

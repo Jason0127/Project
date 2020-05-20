@@ -52,26 +52,6 @@
             }
         }
 
-        function encript_decrypt($id, $action){
-            $secret_iv = 'secret0127';
-            $secret_key = '0127';
-            $method = 'AES-256-CBC';
-
-            $key = hash('sha256', $secret_key);
-
-            $iv = substr(hash('sha256', $secret_iv), 0, 16);
-
-            if($action == 'encr'){
-                $out = openssl_encrypt($id, $method, $key, 0, $iv);
-                $out = base64_encode($out);
-            }elseif($action == 'decr'){
-                $out = openssl_decrypt(base64_decode($id), $method, $key, 0, $iv);
-            }
-            
-            return $out;
-        }
-
-
         function loginC($data){
             $user_name = (isset($data['email']) ? $data['email'] : '');
             $user_pass = (isset($data['pass']) ? $data['pass'] : '');
@@ -231,6 +211,20 @@
 
                 return $res;
             }
+        }
+
+        function adminLogout() {
+            setcookie('adminAuth', '', time() + 1800, '/');
+            return array(
+                'success' => true
+            );
+        }
+
+        function userLogout() {
+            setcookie('auth', '', time() + 1800, '/');
+            return array(
+                'success' => true
+            );
         }
 
         function getProductTC(){
@@ -464,6 +458,14 @@
 
     if(isset($_GET['getProductTable'])){
         echo json_encode($obj->getProductTC());
+    }
+
+    if (isset($_GET['logout'])) {
+        echo json_encode($obj->adminLogout());
+    }
+
+    if (isset($_GET['logoutUser'])) {
+        echo json_encode($obj->userLogout());
     }
     
     // if(isset($_GET['getCart'])){

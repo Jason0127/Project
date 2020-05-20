@@ -22,7 +22,7 @@
             aria-labelledby="navbarDropdownMenuLink-333">
             <a class="dropdown-item" href="#"><?= $user_data['user_name']?></a>
             <a class="dropdown-item" href="user_profile.php">My Account</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="#" onclick="logout();">logout</a>
         </div>
     </li>
 </ul>

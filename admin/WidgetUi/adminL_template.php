@@ -12,6 +12,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-default">
             <a href="" class="dropdown-item"><?= $user_data['user_name']?></a>
+            <a onclick="logout();">Logout</a>
         </div>
     </li>
 </ul>

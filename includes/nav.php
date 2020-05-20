@@ -12,6 +12,11 @@
                     Admin <span class="sr-only">(current)</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="admin" class="nav-link mt-1 ml-auto" style="z-index: 1;" id="sign-btn" onclick="btnLoginHandle()" data-toggle="modal" data-target="#sign-modal">
+                    Sign Up <span class="sr-only">(current)</span>
+                </a>
+            </li>
         </ul>
 
         <a id="login-btn" class="ml-auto btn c-btn-login btn-sm" onclick="btnLoginHandle()" data-toggle="modal" data-target="#login-modal">
